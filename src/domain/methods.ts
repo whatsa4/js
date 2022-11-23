@@ -1,6 +1,12 @@
-import {JsonRpcProvider, MoveCallTransaction, ObjectId, PublicKey} from "@mysten/sui.js";
-const { packageId, timeOracleId, treasuryId, domainCollectionId } = require('../objects.json');
-import { getResolver } from "./queries";
+import {MoveCallTransaction} from "@mysten/sui.js";
+import {SnsApi} from "../api";
+import {
+    DeleteDomainRecordsArguments,
+    ExtendRegistrationArguments,
+    RegisterDomainArguments,
+    SetDomainRecordsArguments
+} from "./index";
+import {getResolver} from "./queries";
 import getTableId from "../util/getTableId";
 
 
@@ -9,50 +15,48 @@ import getTableId from "../util/getTableId";
  */
 
 async function registerDomain(
-    provider: JsonRpcProvider,
-    sender: PublicKey,
-    name: string,
-    tld: string,
-    years: number,
-    coins: ObjectId,
-    gasBudget: number
+    api: SnsApi,
+    args: RegisterDomainArguments
 ): Promise<MoveCallTransaction> {
-    const tableId = getTableId(name);
-    const resolver = await getResolver(provider, name);
+    const { objects } = api;
+    const { gasBudget } = args;
+
+    const tableId = getTableId(args.name, objects);
+    const resolver = await getResolver(api, args.name);
 
     if(!resolver) {
         return {
-            packageObjectId: packageId,
+            packageObjectId: objects.packageId,
             module: 'domain',
             function: 'registerDomain',
             typeArguments: [],
             arguments: [
-                name,
-                tld,
-                years,
-                coins,
-                timeOracleId,
-                treasuryId,
+                args.name,
+                args.tld,
+                args.years,
+                args.coins,
+                objects.timeOracleId,
+                objects.treasuryId,
                 tableId,
-                domainCollectionId
+                objects.domainCollectionId
             ],
             gasBudget,
         }
     } else {
         return {
-            packageObjectId: packageId,
+            packageObjectId: objects.packageId,
             module: 'domain',
             function: 'registerExpiredDomain',
             typeArguments: [],
             arguments: [
-                name,
-                tld,
-                years,
-                coins,
-                timeOracleId,
-                treasuryId,
+                args.name,
+                args.tld,
+                args.years,
+                args.coins,
+                objects.timeOracleId,
+                objects.treasuryId,
                 tableId,
-                domainCollectionId,
+                objects.domainCollectionId,
                 resolver.id
             ],
             gasBudget
@@ -62,25 +66,25 @@ async function registerDomain(
 
 
 async function extendRegistration(
-    provider: JsonRpcProvider,
-    name: string,
-    years: number,
-    coins: ObjectId,
-    gasBudget: number
-) {
-    const resolver = await getResolver(provider, name);
+    api: SnsApi,
+    args: ExtendRegistrationArguments
+): Promise<MoveCallTransaction> {
+    const { objects } = api;
+    const { gasBudget } = args;
+
+    const resolver = await getResolver(api, args.name);
 
     return {
-        packageObjectId: packageId,
+        packageObjectId: objects.packageId,
         module: 'domain',
         function: 'extendRegistration',
         typeArguments: [],
         arguments: [
-            years,
-            coins,
+            args.years,
+            args.coins,
             resolver.domain,
             resolver.id,
-            treasuryId
+            objects.treasuryId
         ],
         gasBudget,
     }
@@ -93,24 +97,23 @@ async function extendRegistration(
 
 
 function setRecords(
-    domain: ObjectId,
-    resolver: ObjectId,
-    keys: [string],
-    values: [string],
-    TTLs: [number],
-    gasBudget: number,
+    api: SnsApi,
+    args: SetDomainRecordsArguments
 ): MoveCallTransaction {
+    const { objects } = api;
+    const { gasBudget } = args;
+
     return {
-        packageObjectId: packageId,
+        packageObjectId: objects.packageId,
         module: 'domain',
         function: 'setRecords',
         typeArguments: [],
         arguments: [
-            domain,
-            resolver,
-            keys,
-            values,
-            TTLs,
+            args.domain,
+            args.resolver,
+            args.keys,
+            args.values,
+            args.TTLs,
         ],
         gasBudget,
     }
@@ -118,24 +121,23 @@ function setRecords(
 
 
 function deleteRecords(
-    domain: ObjectId,
-    resolver: ObjectId,
-    keys: [string],
-    values: [string],
-    TTLs: [number],
-    gasBudget: number,
+    api: SnsApi,
+    args: DeleteDomainRecordsArguments
 ): MoveCallTransaction {
+    const { objects } = api;
+    const { gasBudget } = args;
+
     return {
-        packageObjectId: packageId,
+        packageObjectId: objects.packageId,
         module: 'domain',
         function: 'deleteRecords',
         typeArguments: [],
         arguments: [
-            domain,
-            resolver,
-            keys,
-            values,
-            TTLs,
+            args.domain,
+            args.resolver,
+            args.keys,
+            args.values,
+            args.TTLs,
         ],
         gasBudget,
     }

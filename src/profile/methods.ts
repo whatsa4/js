@@ -1,44 +1,48 @@
 import {MoveCallTransaction, SuiAddress} from "@mysten/sui.js";
-const { packageId } = require('../objects.json');
+import {SnsApi} from "../api";
+import {RegisterProfileArguments, RemovePropertiesArguments, SetPropertiesArguments} from "./index";
 
-function registerProfile(gasBudget: number): MoveCallTransaction {
+
+function registerProfile(api: SnsApi, args: RegisterProfileArguments): MoveCallTransaction {
+    const { objects } = api;
     return {
-        packageObjectId: packageId,
+        packageObjectId: objects.packageId,
         module: 'profile',
         function: 'registerProfile',
         typeArguments: [],
         arguments: [],
-        gasBudget,
-    }
+        gasBudget: args.gasBudget,
+    };
 }
-
-function removeProperties(profile: SuiAddress, keys: [string], gasBudget: number): MoveCallTransaction {
+function setProperties(api: SnsApi, args: SetPropertiesArguments): MoveCallTransaction {
+    const { objects } = api;
     return {
-        packageObjectId: packageId,
+        packageObjectId: objects.packageId,
         module: 'profile',
         function: 'registerProfile',
         typeArguments: [],
         arguments: [
-            keys,
-            profile.toString(),
+            args.keys,
+            args.values,
+            args.profile.toString(),
         ],
-        gasBudget,
-    }
+        gasBudget: args.gasBudget,
+    };
 }
-
-function setProperties(profile: SuiAddress, keys: [string], values: [string], gasBudget: number): MoveCallTransaction {
+function removeProperties(api: SnsApi, args: RemovePropertiesArguments): MoveCallTransaction {
+    const { objects } = api;
     return {
-        packageObjectId: packageId,
+        packageObjectId: objects.packageId,
         module: 'profile',
         function: 'registerProfile',
         typeArguments: [],
         arguments: [
-            keys,
-            values,
-            profile.toString(),
+            args.keys,
+            args.profile.toString(),
         ],
-        gasBudget,
-    }
+        gasBudget: args.gasBudget,
+    };
 }
+
 
 export { registerProfile, setProperties, removeProperties };
