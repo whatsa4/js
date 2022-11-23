@@ -1,6 +1,6 @@
 {
   "name": "@snsdomains/domains.js",
-  "version": "1.0.1",
+  "version": "1.0.17",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "author": "StorkLabs LLC",
@@ -12,9 +12,16 @@
     "@mysten/sui.js": "^0.15.0"
   },
   "devDependencies": {
+    "tweetnacl": "^1.0.3",
+    "@types/mocha": "^10.0.0",
+    "mocha": "^10.1.0",
+    "mocha-steps": "^1.3.0",
+    "ts-mocha": "^10.0.0",
+    "ts-node": "^10.9.1",
     "typescript": "^4.8.4"
   },
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "test": "yarn run ts-mocha -p ./tsconfig.json -t 1000000 tests/**/*.ts"
   }
 }
