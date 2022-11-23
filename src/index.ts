@@ -4,4 +4,4 @@ export { getProfile } from './profile/queries';
 
 export { DomainNFT, Resolver } from './domain';
 export { registerDomain, extendRegistration, setRecords, deleteRecords } from './domain/methods';
-export { getResolver, getDomainNFT, getDomainOwner } from './domain/queries';
+export { getResolver, getDomainNFT, getDomainAddress } from './domain/queries';

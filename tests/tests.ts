@@ -1,22 +1,20 @@
 import {step} from "mocha-steps";
-import {Ed25519Keypair, JsonRpcProvider, Network, RawSigner} from "@mysten/sui.js";
+import {JsonRpcProvider, Network, RawSigner} from "@mysten/sui.js";
 const nacl = require('tweetnacl');
 
 import * as assert from "assert";
-import {getDomainNFT, getResolver} from "../dist";
+import {getDomainNFT, getResolver} from "../src";
+import {timeOracleId} from "../src/objects.json";
 
-describe("Sui Name Service - api tests", async () => {
+describe("Sui Name Service - query api tests", async () => {
     // make random key
-    const secretKey = Uint8Array.from(JSON.parse(process.env.DOMAINS_TEST_SECRET_KEY)) || nacl.sign.keyPair().secretKey;
     const fundAccount = false;
 
-    // console.log('Secret key: [', secretKey.toString(), ']');
-    const keypair = Ed25519Keypair.fromSecretKey(secretKey);
+    const keypair = nacl.sign.keyPair().secretKey;
     const provider = new JsonRpcProvider(Network.DEVNET);
 
     const signer = new RawSigner(keypair, provider);
     const domain_name = "anthony";
-
 
     if(fundAccount) {
         step("fund account", async function () {
@@ -24,6 +22,11 @@ describe("Sui Name Service - api tests", async () => {
             assert.equal(response.error, null);
         });
     }
+
+    it("program - deployed", async function() {
+        const timeOracleQueryResponse = await provider.getObject(timeOracleId);
+        assert.equal(timeOracleQueryResponse.status, 'Exists', 'program not deployed or old objects.json');
+    });
 
     describe("domains - queries", async function() {
         step("getResolver", async function() {

@@ -1,15 +1,28 @@
-<h1>@snsdomains/js</h1>
+<div align="center">
+  <h1>@snsdomains/js</h1>
+</div>
 
 ![build workflow](https://github.com/snsdomains/js/actions/workflows/tests.yml/badge.svg)
 [![npm version](https://badge.fury.io/js/@snsdomains%2Fidl.svg)](https://badge.fury.io/js/@snsdomains%2Fidl)
 
-The Sui Name Service is the first community-run name service on the Sui Network. This package provides all the JavaScript resources to
-interact with the on-chain [domains](https://github.com/snsdomains/domains) program. 
+The Sui Name Service is a decentralized naming and identity protocol for the Sui Network. This package provides all the JavaScript resources to
+interact with the on-chain [domains](https://github.com/snsdomains/domains) program. We are proudly open-source and community-run.
 
-## Getting Started
-For a quick start guide, please see the examples below or view the documentation here. The library is very
-straightforward and actively used in production. If you require any on-boarding assistance or have a partnership requests,
-please email us at `partners@sns.domains`.
+Install with [npm](https://www.npmjs.com/):
+```shell
+$ npm install @snsdomains/js
+```
+
+Install with [yarn](https://yarnpkg.com):
+```shell
+$ yarn add @snsdomains/js
+```
+
+## Quick start
+
+For a quick start guide, please see the examples below. The library is very
+lightweight and actively used in our production software. If you require any on-boarding assistance or have a partnership requests,
+please email us at `anthony@sns.domains`.
 
 ####Sui Devnet
 Please note that the Sui devnet updates will require us to update this library to work with the new deployed addresses. All you have to do is update
@@ -30,16 +43,17 @@ This was done to prevent mis-transfers of funds following secondary sales, and t
 associated with changing the resolvable address of a domain.
 
 ## Examples
-Here is an example of all the available methods.
+*Resolve a domain in three lines of code!* </br>
+Below are listed all of our available query methods.
 
 ```typescript
-import {getResolver, getDomain} from '@snsdomains/js';
+import {getResolver, getDomainNFT, getDomainAddress} from '@snsdomains/js';
 import {JsonRpcProvider} from "@mysten/sui.js";
 
 const provider = new JsonRpcProvider(Network.DEVNET);
 
-// get the domain owner "anthony.sui" - ALWAYS SEND TO THIS ADDRESS
-const owner: SuiAddress = await getDomainOwner(provider, "anthony.sui");
+// get the address for "anthony.sui" - ALWAYS SEND TO THIS ADDRESS
+const address: SuiAddress = await getDomainAddress(provider, "anthony.sui");
 
 // get the domain NFT for "anthony.sui"
 const domain: DomainNFT = await getDomainNFT(provider, "anthony.sui");
