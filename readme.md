@@ -64,3 +64,9 @@ const resolver: Resolver = await getResolver(provider, "anthony.sui");
 // get a user's profile on Sui (automatically created)
 const userAddress = "0xc78184323182485f24e9484b52c42436b7410fc2";
 const profile: Profile = await getProfile(provider, userAddress);
+```
+
+### Versioning
+* 0.0.1 Increase: **object.json** update
+* 0.1.0 Increase: feature update
+* 1.0.0 Increase: major / breaking changes
