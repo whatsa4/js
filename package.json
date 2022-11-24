@@ -9,15 +9,16 @@
     "/dist"
   ],
   "dependencies": {
-    "@mysten/sui.js": "^0.15.0"
+    "@mysten/sui.js": "^0.15.0",
+    "axios": "^1.2.0"
   },
   "devDependencies": {
-    "tweetnacl": "^1.0.3",
     "@types/mocha": "^10.0.0",
     "mocha": "^10.1.0",
     "mocha-steps": "^1.3.0",
     "ts-mocha": "^10.0.0",
     "ts-node": "^10.9.1",
+    "tweetnacl": "^1.0.3",
     "typescript": "^4.8.4"
   },
   "scripts": {
