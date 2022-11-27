@@ -58,7 +58,6 @@ async function getDomainNFTByResolver(api: SnsApi, resolver: Resolver): Promise<
             owner: domainOwner.toString(),
 
             name: domainFields.name,
-            tld: domainFields.tld,
             attributes: domainFields.attributes,
             url: domainFields.url,
 
