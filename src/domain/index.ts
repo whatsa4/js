@@ -24,7 +24,6 @@ export interface DomainNFT {
     owner: SuiAddress,
 
     name: string,
-    tld: string,
     attributes: {
         keys: [string],
         values: [string]
