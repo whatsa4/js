@@ -8,7 +8,7 @@ import {
     SuiObject
 } from "@mysten/sui.js";
 import * as assert from "assert";
-import {SnsApi} from "../src";
+import {getProfileType, SnsApi} from "../src";
 import {getObjects, queryForObjects} from "../src/objects";
 import crypto from 'crypto';
 
