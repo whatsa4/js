@@ -40,16 +40,19 @@ export interface DomainNFT {
 
 export interface RegisterDomainArguments {
     sender: SuiAddress,
+
     name: string,
     tld: string,
     years: number,
     coins: ObjectId,
+
     gasBudget: number
 }
 export interface ExtendRegistrationArguments {
     name: string,
     years: number,
     coins: ObjectId,
+    createProfile: boolean,
     gasBudget: number
 }
 export interface SetDomainRecordsArguments {
