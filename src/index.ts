@@ -11,7 +11,7 @@ export {
 export {
     Profile,
     RegisterProfileArguments,
-    SetPropertiesArguments,
+    UpdateProfileArguments,
     RemovePropertiesArguments,
     getType as getProfileType
 } from './profile';
