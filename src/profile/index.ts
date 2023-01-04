@@ -1,7 +1,8 @@
-import {MoveCallTransaction, PublicKey, SuiAddress} from "@mysten/sui.js";
+import {MoveCallTransaction, SuiAddress} from "@mysten/sui.js";
 import {SnsApi} from "../api";
-import {getProfile} from "./queries";
-import {registerProfile, setProperties, removeProperties} from "./methods";
+import {getPrimaryDomain, getProfile} from "./queries";
+import {registerProfile, updateProfile} from "./methods";
+import {DomainNFT} from "../domain";
 
 /*
  * Interfaces
@@ -14,7 +15,7 @@ export interface Profile {
     primary?: string,
     properties: [string: string],
 }
-export const getType = (packageId) => `${packageId}::profile::Profile`;
+export const getType = (packageId) => `${packageId}::domain::Profile`;
 
 /*
  * Arguments
@@ -28,8 +29,12 @@ export interface RemovePropertiesArguments {
     keys: [string],
     gasBudget: number
 }
-export interface SetPropertiesArguments {
+export interface UpdateProfileArguments {
     profile: SuiAddress,
+
+    name: string,
+    url: string,
+    primary?: SuiAddress,
     keys: [string],
     values: [string],
     gasBudget: number
@@ -51,8 +56,11 @@ export class Profiles {
      * Queries
      */
 
-    async getProfile(address: PublicKey): Promise<Profile> {
+    async getProfile(address: SuiAddress): Promise<Profile> {
         return await getProfile(this.api, address);
+    }
+    async getPrimaryDomain(profileAddress: SuiAddress): Promise<DomainNFT> {
+        return await getPrimaryDomain(this.api, profileAddress);
     }
 
     /*
@@ -62,10 +70,7 @@ export class Profiles {
     registerProfile(args: RegisterProfileArguments): MoveCallTransaction {
         return registerProfile(this.api, args);
     };
-    setProperties(args: SetPropertiesArguments): MoveCallTransaction {
-        return setProperties(this.api, args);
-    };
-    removeProperties(args: RemovePropertiesArguments): MoveCallTransaction {
-        return removeProperties(this.api, args);
+    updateProfile(args: UpdateProfileArguments): MoveCallTransaction {
+        return updateProfile(this.api, args);
     };
 }

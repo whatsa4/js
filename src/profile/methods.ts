@@ -1,48 +1,40 @@
-import {MoveCallTransaction, SuiAddress} from "@mysten/sui.js";
+import {MoveCallTransaction} from "@mysten/sui.js";
 import {SnsApi} from "../api";
-import {RegisterProfileArguments, RemovePropertiesArguments, SetPropertiesArguments} from "./index";
+import {RegisterProfileArguments, UpdateProfileArguments} from "./index";
 
 
 function registerProfile(api: SnsApi, args: RegisterProfileArguments): MoveCallTransaction {
     const { objects } = api;
     return {
         packageObjectId: objects.packageId,
-        module: 'profile',
-        function: 'registerProfile',
-        typeArguments: [],
-        arguments: [],
-        gasBudget: args.gasBudget,
-    };
-}
-function setProperties(api: SnsApi, args: SetPropertiesArguments): MoveCallTransaction {
-    const { objects } = api;
-    return {
-        packageObjectId: objects.packageId,
-        module: 'profile',
-        function: 'registerProfile',
+        module: 'domain',
+        function: 'updateProfile',
         typeArguments: [],
         arguments: [
-            args.keys,
-            args.values,
-            args.profile.toString(),
+            objects.timeOracleId
         ],
         gasBudget: args.gasBudget,
     };
 }
-function removeProperties(api: SnsApi, args: RemovePropertiesArguments): MoveCallTransaction {
-    const { objects } = api;
+function updateProfile(api: SnsApi, args: UpdateProfileArguments): MoveCallTransaction {
+    const {objects} = api;
     return {
         packageObjectId: objects.packageId,
-        module: 'profile',
-        function: 'registerProfile',
+        module: 'domain',
+        function: 'updateProfile',
         typeArguments: [],
         arguments: [
-            args.keys,
             args.profile.toString(),
+
+            args.name,
+            args.url,
+            args.primary,
+            args.keys,
+            args.values
         ],
         gasBudget: args.gasBudget,
     };
 }
 
 
-export { registerProfile, setProperties, removeProperties };
+export { registerProfile, updateProfile };

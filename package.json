@@ -1,6 +1,6 @@
 {
   "name": "@snsdomains/js",
-  "version": "2.0.5",
+  "version": "2.1.2",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "author": "StorkLabs LLC",

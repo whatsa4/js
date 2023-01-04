@@ -1,6 +1,6 @@
-import {MoveCallTransaction, ObjectId, PublicKey, SuiAddress} from "@mysten/sui.js";
+import {MoveCallTransaction, ObjectId, SuiAddress} from "@mysten/sui.js";
 import {SnsApi} from "../api";
-import {getResolver, getDomainNFT, getAddress, getAddressByResolver} from "./queries";
+import {getResolver, getDomainNFT, getAddress, getAddressByResolver, getDomainNFTById} from "./queries";
 import {registerDomain, extendRegistration, deleteRecords, setRecords} from "./methods";
 
 /*
@@ -24,7 +24,6 @@ export interface DomainNFT {
     owner: SuiAddress,
 
     name: string,
-    tld: string,
     attributes: {
         keys: [string],
         values: [string]
@@ -40,17 +39,20 @@ export interface DomainNFT {
  */
 
 export interface RegisterDomainArguments {
-    sender: PublicKey,
+    sender: SuiAddress,
+
     name: string,
     tld: string,
     years: number,
     coins: ObjectId,
+
     gasBudget: number
 }
 export interface ExtendRegistrationArguments {
     name: string,
     years: number,
     coins: ObjectId,
+    createProfile: boolean,
     gasBudget: number
 }
 export interface SetDomainRecordsArguments {
@@ -92,6 +94,9 @@ export class Domains {
     async getDomainNFT(domain: string): Promise<DomainNFT> {
         return await getDomainNFT(this.api, domain);
     };
+    async getDomainNFTById(id: SuiAddress): Promise<DomainNFT> {
+        return getDomainNFTById(this.api, id);
+    }
     async getAddress(domain: string): Promise<SuiAddress> {
         return await getAddress(this.api, domain);
     };

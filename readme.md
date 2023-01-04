@@ -23,18 +23,16 @@ lightweight and actively used in our production software. If you require any on-
 please email us at `anthony@sns.domains`.
 
 ### Sui Devnet
-Please note that the Sui devnet updates will require us to update this library to work with the new deployed addresses. All you have to do is update
-this library locally, and it will automatically use the correct addresses.
+Please note that the Sui devnet updates will require us to update this library to work with the new deployed addresses. Luckily, this feature is built-in and you don't have to continuously update your addreses. Instead, it will fetch from our [objects.json](https://github.com/snsdomains/objects.json) repository.
 
 ## Built to Scale
 
-The Sui Name Service domains program is built to scale to 100m+ names on-chain with O(log n) base-lookup time for each name and O(1) for consecutive queries. 
+The Sui Name Service domains program is built to scale to 100m+ names on-chain, by using the Sui dynamic object API.
 The API structure for domains is as follows:
-1. **Resolver**: Associates a domain with records and an ownership NFT. (Can be cached)
+1. **Resolver**: Stores all domain text records and a reference to its ownership NFT. (Can be cached)
 2. **Domain NFT**: Represents ownership of the domain name. Whoever owns this NFT is automatically the resolvable address for the domain.
 3. **Profile**: Automatically created with a user's first domain registration (free of charge). This is
-used to reflect a user's identity on Sui and can be configured with all elements of their basic profile. It 
-is stored as an object owned by the user.
+used to reflect a user's identity on Sui and can be configured with all elements of their basic profile. 
 
 To prevent confusion, the **DomainNFT** owner will always be the resolvable address of the domain.
 This was done to prevent mis-transfers of funds following secondary sales, and the limited use cases
