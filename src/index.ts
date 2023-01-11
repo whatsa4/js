@@ -14,3 +14,6 @@ export {
     SetPropertiesArguments,
     RemovePropertiesArguments
 } from './profile';
+export {
+    queryForObjects
+} from './objects';

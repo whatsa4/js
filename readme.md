@@ -46,13 +46,20 @@ Below are listed all of our available query methods.
 
 **GET a Domain's `SuiAddress`** <br/>
 This is the core query of the Sui Name Service and resolves a domain to its owner. <br/>
+Our library is made to work whenever the Sui Network resets without you having to update
+to a new version. It automatically fetches our latest deployed program IDs from Github.
+
 ```typescript
-import {SnsApi} from '@snsdomains/js';
+import {SnsApi, queryForObjects} from '@snsdomains/js';
 import {JsonRpcProvider, Network} from "@mysten/sui.js";
+
+// *This is only required for dev-net.
+// It fetches our program IDs without you having to update this library
+const objects = await queryForObjects(Network.DEVNET);
 
 // Configure API / provider
 const provider = new JsonRpcProvider(Network.DEVNET);
-const api = new SnsApi(provider, Network.DEVNET);
+const api = new SnsApi(provider, Network.DEVNET, objects);
 
 // Resolve domain
 const address = await api.domains.getAddress("anthony.sui");
@@ -73,8 +80,8 @@ const resolver = await api.domains.getResolver("anthony.sui");
 
 **GET a user's Sui `Profile`**<br/>
 ```typescript
-const userAddress = ""
-const profile = await api.profiles.getProfile();
+const userAddress = "0xc4173a804406a365e69dfb297d4eaaf002546ebd"
+const profile = await api.profiles.getProfile(userAddress);
 ```
 
 
