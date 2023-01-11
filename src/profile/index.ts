@@ -29,7 +29,7 @@ export interface RegisterProfileArguments {
 }
 export interface UpdateProfileArguments {
     name: string,
-    description: string,
+    bio: string,
     keys: [string],
     values: [string],
     primary: SuiAddress,

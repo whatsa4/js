@@ -25,7 +25,7 @@ function updateProfile(api: SnsApi, args: UpdateProfileArguments): MoveCallTrans
         typeArguments: [],
         arguments: [
             args.name,
-            args.description,
+            args.bio,
             args.keys,
             args.values,
 
