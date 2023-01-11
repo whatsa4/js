@@ -28,11 +28,11 @@ export interface RegisterProfileArguments {
     gasBudget?: number
 }
 export interface UpdateProfileArguments {
-    name?: string,
-    description?: string,
-    keys?: [string],
-    values?: [string],
-    primary?: SuiAddress,
+    name: string,
+    description: string,
+    keys: [string],
+    values: [string],
+    primary: SuiAddress,
 
     gasBudget?: number,
 }
