@@ -97,7 +97,7 @@ function parseDomainObjectResponse(objectResponse: GetObjectDataResponse): Domai
         }
 
         return {
-            id: object['id'],
+            id: object.id['id'],
             collection: object['collection'],
             owner: object['owner'],
 
