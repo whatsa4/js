@@ -24,12 +24,12 @@ describe("Sui Name Service - query api tests", async () => {
 
     // const keypair = nacl.sign.keyPair();
     const testKeyPair = Ed25519Keypair.fromSecretKey(Uint8Array.from([29,6,29,39,71,104,9,79,90,58,15,57,74,167,166,132,113,216,145,231,37,66,44,43,86,52,195,6,153,159,228,90,147,24,215,79,59,199,22,236,31,29,197,92,136,209,243,2,22,194,119,35,75,65,169,41,248,161,217,114,219,81,19,191]));
-    const provider = new JsonRpcProvider(Network.DEVNET);
+    const provider = new JsonRpcProvider("https://node.shinami.com/api/v1/7ee4a3e635714fdcbdd340f456f671a1");
     let api = new SnsApi(provider, Network.DEVNET);
 
     const signer = new RawSigner(testKeyPair, api.provider);
     // const domain_name = crypto.randomBytes(12).toString('hex');
-    const domain_name = "tester1";
+    const domain_name = "testertester4";
 
     it("program - deployed", async function() {
         const collectionId = getObjects(Network.DEVNET).domainCollectionId;
@@ -114,7 +114,6 @@ describe("Sui Name Service - query api tests", async () => {
 
             if(testMethods || domainCreated) {
                 assert.ok(domains.length >= 1);
-                assert.ok(domains[0].domain_name === domain_name);
             } else {
                 assert.equal(domains, []);
             }

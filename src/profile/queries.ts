@@ -6,13 +6,18 @@ import {SnsApi} from "../api";
 async function getProfile(api: SnsApi, address: SuiAddress): Promise<Profile> {
     const url = api.provider.endpoints.fullNode;
     const { profileRegistryId } = api.programObjects;
+    let stringAddress = address;
+
+    if(!address.startsWith("0x")) {
+        stringAddress = '0x' + address;
+    }
 
     try {
         const response = await axios.post(url, {
             jsonrpc: "2.0",
             id: 1,
             method: "sui_getDynamicFieldObject",
-            params: [profileRegistryId, `0x${address.toString()}`]
+            params: [profileRegistryId, `${stringAddress}`]
         });
 
         const result = response.data;
