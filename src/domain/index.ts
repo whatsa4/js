@@ -63,6 +63,8 @@ export interface ExtendRegistrationArguments {
 }
 export interface SetDomainRecordsArguments {
     domain_nft: ObjectId,
+
+    types: [string],
     keys: [string],
     values: [string],
     ttls: [number],

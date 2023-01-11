@@ -76,6 +76,8 @@ function setRecords(
         typeArguments: [],
         arguments: [
             args.domain_nft,
+
+            args.types,
             args.keys,
             args.values,
             args.ttls,
