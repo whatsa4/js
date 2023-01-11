@@ -1,8 +1,13 @@
 {
-  "name": "domains.js",
+  "name": "@snsdomains/domains.js",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "author": "StorkLabs LLC",
   "license": "MIT",
+  "files": [
+    "/dist"
+  ],
   "dependencies": {
     "@mysten/sui.js": "^0.15.0"
   },

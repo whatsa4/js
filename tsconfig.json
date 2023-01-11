@@ -4,10 +4,14 @@
     "target": "es2015",
     "declaration": true,
     "outDir": "./dist",
+    "rootDir": "src",
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "typeRoots": ["./node_modules/@types"],
     "skipLibCheck": true,
     "moduleResolution": "node"
   },
+  "include": [
+    "src/objects.json"
+  ]
 }

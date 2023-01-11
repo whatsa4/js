@@ -1,7 +1,7 @@
 import {JsonRpcProvider, MoveCallTransaction, ObjectId, PublicKey} from "@mysten/sui.js";
 const { packageId, timeOracleId, treasuryId, domainCollectionId } = require('../objects.json');
-import getTableId from "../util/getTableId";
 import { getResolver } from "./queries";
+import getTableId from "../util/getTableId";
 
 
 /*
@@ -140,7 +140,6 @@ function deleteRecords(
         gasBudget,
     }
 }
-
 
 
 export { registerDomain, extendRegistration, setRecords, deleteRecords }
