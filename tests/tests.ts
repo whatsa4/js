@@ -88,12 +88,6 @@ describe("Sui Name Service - query api tests", async () => {
                 assert.equal(domain, null);
             }
         });
-
-        step("getAddress", async function() {
-            const address = await api.domains.getAddress("5a2c1a6e2bf54bf11afc346ab54e20cd91c56267.sui");
-
-            console.log(address);
-        })
     });
 
 });

@@ -42,11 +42,10 @@ async function getResolver(api: SnsApi, domain: string): Promise<Resolver> {
     }
 }
 
-async function getDomainNFTByResolver(api: SnsApi, resolver: Resolver): Promise<DomainNFT> {
-    const { provider } = api;
+async function getDomainNFTById(api: SnsApi, id: SuiAddress): Promise<DomainNFT> {
+    const domainObjectResponse = await api.provider.getObject(id);
 
-    if(resolver) {
-        const domainObjectResponse = await provider.getObject(resolver.domain);
+    if(domainObjectResponse.status === 'Exists') {
         const domainObject = domainObjectResponse.details as SuiObject;
 
         const domainOwner = domainObject.owner['AddressOwner'];
@@ -64,6 +63,12 @@ async function getDomainNFTByResolver(api: SnsApi, resolver: Resolver): Promise<
             expiration: domainFields.expiration,
             timestamp: domainFields.timestamp,
         }
+    }
+    return null;
+}
+async function getDomainNFTByResolver(api: SnsApi, resolver: Resolver): Promise<DomainNFT> {
+    if(resolver) {
+        return await getDomainNFTById(api, resolver.domain);
     } else {
         return null;
     }
@@ -106,4 +111,4 @@ async function getAddressByResolver(api: SnsApi, resolverId: SuiAddress): Promis
     return null;
 }
 
-export { getResolver, getDomainNFT, getAddress, getAddressByResolver };
+export { getResolver, getDomainNFTById, getDomainNFT, getAddress, getAddressByResolver };
