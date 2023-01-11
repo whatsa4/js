@@ -1,6 +1,6 @@
 import {DomainNFT, DomainResolver, getDomainNftType} from "./index";
 import {SnsApi} from "../api";
-import {SuiAddress, SuiMoveObject, SuiObject} from "@mysten/sui.js";
+import {GetObjectDataResponse, SuiAddress, SuiMoveObject, SuiObject} from "@mysten/sui.js";
 import axios from 'axios';
 
 
@@ -74,10 +74,46 @@ async function getAddress(api: SnsApi, domain: string): Promise<SuiAddress> {
 
         if (objectResponse.status === "Exists") {
             const objectDetails = (objectResponse.details as SuiObject);
-            return objectDetails.owner['ObjectOwner'];
+            return objectDetails.owner['AddressOwner'];
         } else {
             return null;
         }
+    } else {
+        return null;
+    }
+}
+
+function parseDomainObjectResponse(objectResponse: GetObjectDataResponse): DomainNFT {
+    if(objectResponse.status === "Exists") {
+        const object = ((objectResponse.details as SuiObject).data as SuiMoveObject).fields;
+        const objectAttributes = object.attributes.fields;
+
+        let attributes_keys = [];
+        let attributes_values = [];
+
+        for (let i = 0; i < objectAttributes.keys.length; i++) {
+            attributes_keys.push(objectAttributes.keys[i]);
+            attributes_values.push(objectAttributes.values[i]);
+        }
+
+        return {
+            id: object['id'],
+            collection: object['collection'],
+            owner: object['owner'],
+
+            domain_name: object['domain_name'],
+            domain_tld: object['domain_tld'],
+
+            name: object['name'],
+            attributes: {
+                keys: attributes_keys as [string],
+                values: attributes_values as [string],
+            },
+            url: object['url'],
+
+            expiration: Number(object['expiration']),
+            timestamp: Number(object['timestamp'])
+        };
     } else {
         return null;
     }
@@ -91,44 +127,13 @@ async function getDomain(api: SnsApi, domain: string): Promise<DomainNFT> {
         const nftId = resolver.domain_nft;
         const objectResponse = await provider.getObject(nftId);
 
-        if(objectResponse.status === "Exists") {
-            const object = ((objectResponse.details as SuiObject).data as SuiMoveObject).fields;
-            const objectAttributes = object.attributes.fields;
-
-            let attributes_keys = [];
-            let attributes_values = [];
-
-            for(let i = 0; i < objectAttributes.keys.length; i++) {
-                attributes_keys.push(objectAttributes.keys[i]);
-                attributes_values.push(objectAttributes.values[i]);
-            }
-
-            return {
-                id: object['id'],
-                collection: object['collection'],
-                owner: object['owner'],
-
-                domain_name: object['domain_name'],
-                domain_tld: object['domain_tld'],
-
-                name: object['name'],
-                attributes: {
-                    keys: attributes_keys as [string],
-                    values: attributes_values as [string],
-                },
-                url: object['url'],
-
-                expiration: Number(object['expiration']),
-                timestamp: Number(object['timestamp'])
-            };
-        } else {
-            return null;
-        }
+        return parseDomainObjectResponse(objectResponse);
     } else {
         return null;
     }
 }
 
+// inefficient: always check locally owned objects when you can
 async function getDomains(api: SnsApi, address: SuiAddress): Promise<DomainNFT[]> {
     const { provider, programObjects } = api;
 
@@ -142,28 +147,10 @@ async function getDomains(api: SnsApi, address: SuiAddress): Promise<DomainNFT[]
 
     // fetch objects
     const domainObjects = await provider.getObjectBatch(domainObjectIds);
-    let validResponses = domainObjects.filter((objectResponse) => objectResponse.status === 'Exists');
+    const validResponses = domainObjects.filter((objectResponse) => objectResponse.status === 'Exists');
 
     // parse NFTs
-    return validResponses.map((objectResponse) => {
-        const object = (objectResponse.details as SuiObject).data as SuiMoveObject;
-
-        return {
-            id: object['id'],
-            collection: object['collection'],
-            owner: object['owner'],
-
-            domain_name: object['domain_name'],
-            domain_tld: object['domain_tld'],
-
-            name: object['name'],
-            attributes: object['attributes'],
-            url: object['url'],
-
-            expiration: object['expiration'],
-            timestamp: object['timestamp']
-        }
-    });
+    return validResponses.map((objectResponse) => parseDomainObjectResponse(objectResponse));
 }
 
 export { getResolver, getAddress, getDomain, getDomains };

@@ -12,6 +12,13 @@ import {getObjects, queryForObjects} from "../src/objects";
 
 const nacl = require('tweetnacl');
 
+/*
+ * On deploy testing: a new address is created & used to make a domain
+ * this domain / address is used to test whether the test cases work.
+ * Because this is only done on deploys, it doesn't matter if the public
+ * key is leaked. We manually test before publishing anyway.
+ */
+
 describe("Sui Name Service - query api tests", async () => {
     // make random key
     const testMethods = false;
@@ -69,7 +76,7 @@ describe("Sui Name Service - query api tests", async () => {
     });
 
     describe("domains - queries", async function() {
-        step("getResolver", async function() {
+        step("domain::getResolver", async function() {
             const resolver = await api.domains.getResolver(domain_name);
 
             if(testMethods || domainCreated) {
@@ -79,7 +86,7 @@ describe("Sui Name Service - query api tests", async () => {
             }
         });
 
-        step("getDomain", async function() {
+        step("domain::getDomain", async function() {
             const domain = await api.domains.getDomain(domain_name);
 
             if(testMethods || domainCreated) {
@@ -89,7 +96,32 @@ describe("Sui Name Service - query api tests", async () => {
             }
         });
 
-        step("getProfile", async function() {
+        step("domain::getAddress", async function() {
+            const address = await signer.getAddress();
+            const ownerAddress = await api.domains.getAddress(domain_name);
+
+            if(testMethods || domainCreated) {
+                assert.equal(ownerAddress, `0x${address}`);
+            } else {
+                assert.equal(ownerAddress, null);
+            }
+        });
+
+        step("domain::getDomains", async function() {
+            const address = await signer.getAddress();
+            const domains = await api.domains.getDomains(address);
+
+            if(testMethods || domainCreated) {
+                console.log('domains', domains);
+
+                assert.ok(domains.length >= 1);
+                assert.ok(domains[0].domain_name === domain_name);
+            } else {
+                assert.equal(domains, []);
+            }
+        });
+
+        step("profile::getProfile", async function() {
             const address = await signer.getAddress();
             const profile = await api.profiles.getProfile(address);
 
