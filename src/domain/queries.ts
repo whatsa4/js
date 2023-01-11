@@ -1,4 +1,4 @@
-import {DomainNFT, DomainResolver, getDomainNftType} from "./index";
+import {DomainNFT, DomainResolver, getDomainNftType, ResolverRecord} from "./index";
 import {SnsApi} from "../api";
 import {GetObjectDataResponse, SuiAddress, SuiMoveObject, SuiObject} from "@mysten/sui.js";
 import axios from 'axios';
@@ -39,11 +39,12 @@ async function getResolver(api: SnsApi, domain: string): Promise<DomainResolver>
             const records = [];
 
             for(let unparsedRecord of fields.records) {
+                const fields = unparsedRecord['fields'];
                 const parsedRecord = {
-                    type: unparsedRecord.type,
-                    key: unparsedRecord.key,
-                    value: unparsedRecord.value,
-                    ttl: Number(unparsedRecord.ttl),
+                    type: fields.type,
+                    key: fields.key,
+                    value: fields.value,
+                    ttl: Number(fields.ttl),
                 };
 
                 records.push(parsedRecord);
@@ -52,7 +53,7 @@ async function getResolver(api: SnsApi, domain: string): Promise<DomainResolver>
             return {
                 id: fields['id'].id,
                 domain_nft: fields.domain_nft,
-                records: fields.records,
+                records: records as [ResolverRecord],
                 expiration: Number(fields.expiration)
             }
         } else {

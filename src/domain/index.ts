@@ -31,7 +31,9 @@ export interface ResolverRecord {
     type: string,
     key: string,
     value: string,
-    ttl: number
+
+    // u64 stored as string when passed into move args
+    ttl: string,
 }
 export interface DomainResolver {
     id: SuiAddress,
@@ -67,7 +69,7 @@ export interface SetDomainRecordsArguments {
     types: [string],
     keys: [string],
     values: [string],
-    ttls: [number],
+    ttls: [string],
 
     gasBudget?: number,
 }
