@@ -12,7 +12,8 @@ export {
     Profile,
     RegisterProfileArguments,
     SetPropertiesArguments,
-    RemovePropertiesArguments
+    RemovePropertiesArguments,
+    getType as getProfileType
 } from './profile';
 export {
     queryForObjects
