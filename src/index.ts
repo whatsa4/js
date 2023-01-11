@@ -13,8 +13,6 @@ export {
     Profile,
     RegisterProfileArguments,
     UpdateProfileArguments,
-
-    getType as getProfileType
 } from './profile';
 export {
     queryForObjects

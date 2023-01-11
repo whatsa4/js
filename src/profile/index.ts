@@ -19,7 +19,6 @@ export interface Profile {
 
     timestamp: number,
 }
-export const getType = (packageId) => `${packageId}::domain::Profile`;
 
 /*
  * Arguments
