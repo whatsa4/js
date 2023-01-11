@@ -44,10 +44,10 @@ associated with changing the resolvable address of a domain.
 *Resolve a domain in five lines of code!* </br>
 Below are listed all of our available query methods.
 
-**GET a Domain's `SuiAddress`** <br/>
+#### GET a Domain's `SuiAddress`
 This is the core query of the Sui Name Service and resolves a domain to its owner. <br/>
 Our library is made to work whenever the Sui Network resets without you having to update
-to a new version. It automatically fetches our latest deployed program IDs from Github.
+to a new version. It automatically fetches our latest deployed program IDs from our <a href="https://github.com/snsdomains/objects.json">Github</a>.
 
 ```typescript
 import {SnsApi, queryForObjects} from '@snsdomains/js';
@@ -65,12 +65,12 @@ const api = new SnsApi(provider, Network.DEVNET, objects);
 const address = await api.domains.getAddress("anthony.sui");
 ```
 
-**GET an Ownership `DomainNFT`**
+#### GET an Ownership `DomainNFT`
 ```typescript
 const nft = await api.domains.getDomainNFT("anthony.sui");
 ```
 
-**GET a `DomainResolver`**<br/>
+#### GET a `DomainResolver`
 Domain name-service records are stored on the resolver.
 For consecutive queries of the same name, please cache the domain's `Resolver` and use it
 to re-query the domain address or records.
@@ -78,7 +78,7 @@ to re-query the domain address or records.
 const resolver = await api.domains.getResolver("anthony.sui");
 ```
 
-**GET a user's Sui `Profile`**<br/>
+#### GET a user's Sui `Profile`
 ```typescript
 const userAddress = "0xc4173a804406a365e69dfb297d4eaaf002546ebd"
 const profile = await api.profiles.getProfile(userAddress);
@@ -89,6 +89,6 @@ const profile = await api.profiles.getProfile(userAddress);
 
 
 ### Versioning
-* 0.0.1 Increase: **object.json** update
+* 0.0.1 Increase: **object.json** update / and or **readme.md**
 * 0.1.0 Increase: feature update
 * 1.0.0 Increase: major / breaking changes
