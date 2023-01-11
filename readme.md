@@ -22,7 +22,7 @@ For a quick start guide, please see the examples below. The library is very
 lightweight and actively used in our production software. If you require any on-boarding assistance or have a partnership requests,
 please email us at `anthony@sns.domains`.
 
-###Sui Devnet
+### Sui Devnet
 Please note that the Sui devnet updates will require us to update this library to work with the new deployed addresses. All you have to do is update
 this library locally, and it will automatically use the correct addresses.
 
