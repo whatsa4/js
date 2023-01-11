@@ -6,28 +6,33 @@ async function getResolver(provider: JsonRpcProvider, name: string): Promise<Res
     const tableId = getTableId(name);
     const tableObjectResponse = await provider.getObject(tableId);
 
-    const tableFields = ((tableObjectResponse.details as SuiObject).data as SuiMoveObject).fields;
-    const resolvers = tableFields.resolvers.fields.contents;
-    let resolverId = null;
+    if(tableObjectResponse.status !== "NotExists") {
+        const tableFields = ((tableObjectResponse.details as SuiObject).data as SuiMoveObject).fields;
+        const resolvers = tableFields.resolvers.fields.contents;
+        let resolverId = null;
 
-    for(let index in resolvers) {
-        let resolver = resolvers[index];
-        if(resolver.fields.key === name.toLowerCase().toString()) {
-            resolverId = resolver.fields.value;
+        for (let index in resolvers) {
+            let resolver = resolvers[index];
+            if (resolver.fields.key === name.toLowerCase().toString()) {
+                resolverId = resolver.fields.value;
+            }
         }
-    }
 
-    if(resolverId != null) {
-        const resolverObjectResponse = await provider.getObject(resolverId);
-        const resolverFields = ((resolverObjectResponse.details as SuiObject).data as SuiMoveObject).fields;
-        return {
-            id: resolverFields.id,
-            domain: resolverFields.domain,
-            records: resolverFields.records,
-            subdomains: resolverFields.subdomains,
-            expiration: resolverFields.expiration
-        };
+        if (resolverId != null) {
+            const resolverObjectResponse = await provider.getObject(resolverId);
+            const resolverFields = ((resolverObjectResponse.details as SuiObject).data as SuiMoveObject).fields;
+            return {
+                id: resolverFields.id,
+                domain: resolverFields.domain,
+                records: resolverFields.records,
+                subdomains: resolverFields.subdomains,
+                expiration: resolverFields.expiration
+            };
+        } else {
+            return null;
+        }
     } else {
+        // program not deployed
         return null;
     }
 }
@@ -60,7 +65,7 @@ async function getDomainNFT(provider: JsonRpcProvider, name: string): Promise<Do
     }
 }
 
-async function getDomainOwner(provider: JsonRpcProvider, name: string): Promise<SuiAddress> {
+async function getDomainAddress(provider: JsonRpcProvider, name: string): Promise<SuiAddress> {
     const domain = await getDomainNFT(provider, name);
 
     if(domain) {
@@ -70,4 +75,4 @@ async function getDomainOwner(provider: JsonRpcProvider, name: string): Promise<
     return null;
 }
 
-export { getResolver, getDomainNFT, getDomainOwner };
+export { getResolver, getDomainNFT, getDomainAddress };
