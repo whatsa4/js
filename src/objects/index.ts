@@ -1,5 +1,5 @@
 import {Network, SuiAddress} from "@mysten/sui.js";
-
+import axios from "axios";
 const DEVNET_OBJECTS = require('../objects/devnet.json');
 
 const OBJECTS_URL = "https://raw.githubusercontent.com/snsdomains/objects.json/master/";
@@ -26,8 +26,8 @@ async function queryForObjects(type: Network): Promise<ProgramObjects> {
     if(type == Network.DEVNET) {
         url += 'devnet.json';
 
-        const response = await fetch(url, { method: 'GET' });
-        return await response.json();
+        const response = await axios.get(url);
+        return response.data;
     } else {
         return null;
     }
