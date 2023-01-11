@@ -23,8 +23,7 @@ lightweight and actively used in our production software. If you require any on-
 please email us at `anthony@sns.domains`.
 
 ### Sui Devnet
-Please note that the Sui devnet updates will require us to update this library to work with the new deployed addresses. All you have to do is update
-this library locally, and it will automatically use the correct addresses.
+Please note that the Sui devnet updates will require us to update this library to work with the new deployed addresses. Luckily, this feature is built-in and you don't have to continuously update your addreses. Instead, it will fetch from our [objects.json](https://github.com/snsdomains/objects.json) repository.
 
 ## Built to Scale
 
