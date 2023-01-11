@@ -1,6 +1,7 @@
 import {MoveCallTransaction, SuiAddress} from "@mysten/sui.js";
 import {SnsApi} from "../api";
 import {registerProfile, updateProfile} from "./methods";
+import {getProfile} from "./queries";
 
 /*
  * Interfaces
@@ -10,7 +11,7 @@ export interface Profile {
     id: SuiAddress,
 
     name: string,
-    description: string,
+    bio: string,
     image: string,
 
     primary?: SuiAddress,
@@ -53,11 +54,8 @@ export class Profiles {
      * Queries
      */
 
-    async getProfile(domain: string): Promise<Profile> {
-        return null;
-    }
-    async getProfileByAddress(address: SuiAddress): Promise<Profile> {
-        return null;
+    async getProfile(userAddress: SuiAddress): Promise<Profile> {
+        return getProfile(this.api, userAddress);
     }
 
     /*

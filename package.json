@@ -9,8 +9,8 @@
     "/dist"
   ],
   "dependencies": {
-    "@mysten/sui.js": "^0.20.0",
-    "axios": "^1.2.0"
+    "@mysten/sui.js": "^0.21.0",
+    "axios": "^1.2.2"
   },
   "devDependencies": {
     "@types/mocha": "^10.0.0",

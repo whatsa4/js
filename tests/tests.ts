@@ -1,29 +1,30 @@
 import {step} from "mocha-steps";
 import {
+    Coin,
     Ed25519Keypair,
     JsonRpcProvider,
     Network,
     RawSigner,
-    SuiMoveObject,
-    SuiObject
 } from "@mysten/sui.js";
 import * as assert from "assert";
-import {getProfileType, SnsApi} from "../src";
+import {SnsApi} from "../src";
 import {getObjects, queryForObjects} from "../src/objects";
-import crypto from 'crypto';
 
 const nacl = require('tweetnacl');
 
 describe("Sui Name Service - query api tests", async () => {
     // make random key
     const testMethods = false;
+    const domainCreated = true;
 
-    const keypair = nacl.sign.keyPair();
+    // const keypair = nacl.sign.keyPair();
+    const testKeyPair = Ed25519Keypair.fromSecretKey(Uint8Array.from([29,6,29,39,71,104,9,79,90,58,15,57,74,167,166,132,113,216,145,231,37,66,44,43,86,52,195,6,153,159,228,90,147,24,215,79,59,199,22,236,31,29,197,92,136,209,243,2,22,194,119,35,75,65,169,41,248,161,217,114,219,81,19,191]));
     const provider = new JsonRpcProvider(Network.DEVNET);
     let api = new SnsApi(provider, Network.DEVNET);
 
-    const signer = new RawSigner(Ed25519Keypair.fromSecretKey(keypair.secretKey), api.provider);
-    const domain_name = crypto.randomBytes(20).toString('hex');
+    const signer = new RawSigner(testKeyPair, api.provider);
+    // const domain_name = crypto.randomBytes(12).toString('hex');
+    const domain_name = "testertester3";
 
     it("program - deployed", async function() {
         const timeOracleId = getObjects(Network.DEVNET).timeOracleId;
@@ -32,32 +33,31 @@ describe("Sui Name Service - query api tests", async () => {
     });
 
     if(testMethods) {
-        step("fund account", async function () {
-            const suiAddress = await signer.getAddress();
-            console.log('signer address', suiAddress);
-
-            const response = await signer.requestSuiFromFaucet();
-            assert.equal(response.error, null);
-        });
-
         describe("domains - methods", async function() {
+            // step("fund account", async function () {
+            //     const suiAddress = await signer.getAddress();
+            //     console.log('signer address', suiAddress);
+            //
+            //     const response = await signer.requestSuiFromFaucet();
+            //     assert.equal(response.error, null);
+            // });
+
             step("registerDomain", async function() {
                 const signerAddress = await signer.getAddress();
+                let coinIds = await provider.getGasObjectsOwnedByAddress(signerAddress);
+                let coins = await provider.getObjectBatch(coinIds.map((coinId) => coinId.objectId));
+                coins = coins.sort((coin1, coin2) => Coin.getBalance(coin1) > Coin.getBalance(coin2) ? 1 : -1);
 
-                const coins = await provider.getCoinBalancesOwnedByAddress(signerAddress, "0x2::sui::SUI");
-                const coinsId = ((coins[0].details as SuiObject).data as SuiMoveObject).fields.id.id;
-
+                const coinId = coinIds[2].objectId;
 
                 const domainTx = await api.domains.registerDomain({
-                    sender: signerAddress,
                     name: domain_name,
                     tld: "sui",
                     years: 1,
-                    coins: coinsId,
-                    gasBudget: 100_000
+                    fee: coinId
                 });
 
-                const response = await signer.executeMoveCallWithRequestType(domainTx);
+                const response = await signer.executeMoveCall(domainTx);
                 assert.equal(response['EffectsCert']['effects']['effects']['status']['status'], 'success', response.toString());
             });
         });
@@ -72,7 +72,7 @@ describe("Sui Name Service - query api tests", async () => {
         step("getResolver", async function() {
             const resolver = await api.domains.getResolver(domain_name);
 
-            if(testMethods) {
+            if(testMethods || domainCreated) {
                 assert.notEqual(resolver, null);
             } else {
                 assert.equal(resolver, null);
@@ -80,12 +80,23 @@ describe("Sui Name Service - query api tests", async () => {
         });
 
         step("getDomain", async function() {
-            const domain = await api.domains.getDomainNFT(domain_name);
+            const domain = await api.domains.getDomain(domain_name);
 
-            if(testMethods) {
+            if(testMethods || domainCreated) {
                 assert.notEqual(domain, null);
             } else {
                 assert.equal(domain, null);
+            }
+        });
+
+        step("getProfile", async function() {
+            const address = await signer.getAddress();
+            const profile = await api.profiles.getProfile(address);
+
+            if(testMethods || domainCreated) {
+                assert.notEqual(profile, null);
+            } else {
+                assert.equal(profile, null);
             }
         });
     });

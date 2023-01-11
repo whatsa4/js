@@ -1,13 +1,11 @@
 {
-  "packageId": "0x795d9b451210d08363b5a89dacc669d3c2d2a021",
-  "adminId": "0x5e2b0977191dfba25959e450f33d79ccb79fcfee",
-  "domainAdminCapId": "",
-  "domainRegistryId": "",
-  "profileRegistryId": "",
-
-  "timeOracleId": "",
-  "timeAdminCapId": "",
-
-  "domainCollectionId": "0xed96e5c6d18c05718383e546733b529a2bc0ce72",
-  "domainCollectionAdminCap": ""
+  "packageId": "0xe38bdefcf33bd79f390fd1171c719c09d1c71679",
+  "adminId": "0xc4f8c5aad3e67d52746de3d7ac234581911da7e4",
+  "domainAdminCapId": "0xe29819354e33f256dd122855ca62bbe2a4fcf103",
+  "domainRegistryId": "0xd662cc286664ade55c38e8b60890d940fe11c9fa",
+  "profileRegistryId": "0xe29433265e1c1a9f662907c96dbd772a072de7bb",
+  "timeOracleId": "0xa7202171ae40c7604620beb81c3698dc2a207ab6",
+  "timeAdminCapId": "0xcc751f5f35f87b2462e8ddf2569cbe41417600ba",
+  "domainCollectionId": "0x3153d5d20057e90f942f5de58e549f20d9cc3c12",
+  "domainCollectionAdminCap": "0x36f111251361311463aa565ec8e35533a96e404e"
 }

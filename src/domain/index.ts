@@ -1,6 +1,6 @@
 import {MoveCallTransaction, ObjectId, SuiAddress} from "@mysten/sui.js";
 import {SnsApi} from "../api";
-import {getResolver, getAddress, getDomains} from "./queries";
+import {getResolver, getAddress, getDomain, getDomains} from "./queries";
 import {registerDomain, extendRegistration, setRecords} from "./methods";
 
 /*
@@ -97,6 +97,9 @@ export class Domains {
     }
     async getAddress(domain: string): Promise<SuiAddress> {
         return getAddress(this.api, domain);
+    }
+    async getDomain(domain: string): Promise<DomainNFT> {
+        return getDomain(this.api, domain);
     }
     async getDomains(address: SuiAddress): Promise<DomainNFT[]> {
         return getDomains(this.api, address);
