@@ -43,17 +43,17 @@ async function getResolver(api: SnsApi, domain: string): Promise<DomainResolver>
                     type: unparsedRecord.type,
                     key: unparsedRecord.key,
                     value: unparsedRecord.value,
-                    ttl: unparsedRecord.ttl,
+                    ttl: Number(unparsedRecord.ttl),
                 };
 
                 records.push(parsedRecord);
             }
 
             return {
-                id: fields.id.id,
+                id: fields['id'].id,
                 domain_nft: fields.domain_nft,
                 records: fields.records,
-                expiration: fields.expiration
+                expiration: Number(fields.expiration)
             }
         } else {
             return null;
