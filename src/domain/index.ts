@@ -1,20 +1,22 @@
+import {SuiAddress} from "@mysten/sui.js";
+
 export interface ResolverRecord {
     value: string,
     ttl: number,
 }
 
 export interface Resolver {
-    id: string,
-    domain: string,
+    id: SuiAddress,
+    domain: SuiAddress,
     records: {string: ResolverRecord},
     subdomains?: string,
     expiration: number
 }
 
-export interface Domain {
-    id: string,
-    collection: string,
-    owner: string,
+export interface DomainNFT {
+    id: SuiAddress,
+    collection: SuiAddress,
+    owner: SuiAddress,
 
     name: string,
     tld: string,
