@@ -1,8 +1,9 @@
 export { SnsApi } from './api';
 export {
-    Resolver,
-    ResolverRecord,
     DomainNFT,
+    ResolverRecord,
+    DomainResolver,
+
     RegisterDomainArguments,
     ExtendRegistrationArguments,
     SetDomainRecordsArguments,
@@ -12,7 +13,7 @@ export {
     Profile,
     RegisterProfileArguments,
     UpdateProfileArguments,
-    RemovePropertiesArguments,
+
     getType as getProfileType
 } from './profile';
 export {

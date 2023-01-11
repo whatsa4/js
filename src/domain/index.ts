@@ -28,7 +28,8 @@ export interface DomainNFT {
     timestamp: number,
 }
 export interface ResolverRecord {
-
+    type: string,
+    key: string,
     value: string,
     ttl: number
 }
