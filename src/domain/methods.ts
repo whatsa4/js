@@ -23,6 +23,8 @@ async function registerDomain(
 
     const tableId = getTableId(args.name, objects);
     const resolver = await getResolver(api, args.name);
+    const profile = await api.profiles.getProfile(args.sender);
+    const createProfile = profile != null;
 
     if(!resolver) {
         return {
@@ -35,6 +37,8 @@ async function registerDomain(
                 args.tld,
                 args.years,
                 args.coins,
+                createProfile,
+
                 objects.timeOracleId,
                 objects.treasuryId,
                 tableId,
@@ -53,6 +57,8 @@ async function registerDomain(
                 args.tld,
                 args.years,
                 args.coins,
+                createProfile,
+
                 objects.timeOracleId,
                 objects.treasuryId,
                 tableId,
