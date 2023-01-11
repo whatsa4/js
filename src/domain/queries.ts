@@ -85,7 +85,8 @@ async function getAddress(api: SnsApi, domain: string): Promise<SuiAddress> {
 
 function parseDomainObjectResponse(objectResponse: GetObjectDataResponse): DomainNFT {
     if(objectResponse.status === "Exists") {
-        const object = ((objectResponse.details as SuiObject).data as SuiMoveObject).fields;
+        const objectDetails = (objectResponse.details as SuiObject);
+        const object = (objectDetails.data as SuiMoveObject).fields;
         const objectAttributes = object.attributes.fields;
 
         let attributes_keys = [];
@@ -99,7 +100,7 @@ function parseDomainObjectResponse(objectResponse: GetObjectDataResponse): Domai
         return {
             id: object.id['id'],
             collection: object['collection'],
-            owner: object['owner'],
+            owner: objectDetails.owner['AddressOwner'],
 
             domain_name: object['domain_name'],
             domain_tld: object['domain_tld'],

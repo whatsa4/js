@@ -112,8 +112,6 @@ describe("Sui Name Service - query api tests", async () => {
             const domains = await api.domains.getDomains(address);
 
             if(testMethods || domainCreated) {
-                console.log('domains', domains);
-
                 assert.ok(domains.length >= 1);
                 assert.ok(domains[0].domain_name === domain_name);
             } else {
