@@ -29,7 +29,7 @@ describe("Sui Name Service - query api tests", async () => {
 
     const signer = new RawSigner(testKeyPair, api.provider);
     // const domain_name = crypto.randomBytes(12).toString('hex');
-    const domain_name = "testertester3";
+    const domain_name = "tester1";
 
     it("program - deployed", async function() {
         const collectionId = getObjects(Network.DEVNET).domainCollectionId;
