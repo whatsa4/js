@@ -1,6 +1,6 @@
 {
   "name": "@snsdomains/js",
-  "version": "3.0.5",
+  "version": "3.0.6",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "author": "StorkLabs LLC",
@@ -9,7 +9,7 @@
     "/dist"
   ],
   "dependencies": {
-    "@mysten/sui.js": "^0.21.0",
+    "@mysten/sui.js": "^0.22.0",
     "axios": "^1.2.2"
   },
   "devDependencies": {

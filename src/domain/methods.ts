@@ -16,7 +16,6 @@ async function registerDomain(
     args: RegisterDomainArguments
 ): Promise<MoveCallTransaction> {
     const { programObjects } = api;
-
     return {
         packageObjectId: programObjects.packageId,
         module: 'domain',

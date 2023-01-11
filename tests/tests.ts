@@ -10,8 +10,6 @@ import * as assert from "assert";
 import {SnsApi} from "../src";
 import {getObjects, queryForObjects} from "../src/objects";
 
-const nacl = require('tweetnacl');
-
 /*
  * On deploy testing: a new address is created & used to make a domain
  * this domain / address is used to test whether the test cases work.
