@@ -135,6 +135,13 @@ async function getDomain(api: SnsApi, domain: string): Promise<DomainNFT> {
     }
 }
 
+async function getDomainById(api: SnsApi, nftId: SuiAddress): Promise<DomainNFT> {
+    const provider = api.provider;
+
+    const objectResponse = await provider.getObject(nftId);
+    return parseDomainObjectResponse(objectResponse);
+}
+
 // inefficient: always check locally owned objects when you can
 async function getDomains(api: SnsApi, address: SuiAddress): Promise<DomainNFT[]> {
     const { provider, programObjects } = api;
@@ -155,4 +162,4 @@ async function getDomains(api: SnsApi, address: SuiAddress): Promise<DomainNFT[]
     return validResponses.map((objectResponse) => parseDomainObjectResponse(objectResponse));
 }
 
-export { getResolver, getAddress, getDomain, getDomains };
+export { getResolver, getAddress, getDomain, getDomainById, getDomains };
