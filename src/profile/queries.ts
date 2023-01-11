@@ -8,13 +8,9 @@ async function getProfile(api: SnsApi, address: SuiAddress): Promise<Profile> {
     const { profileRegistryId } = api.programObjects;
     let stringAddress = address.toString();
 
-    console.log(stringAddress);
-
     if(!address.startsWith("0x")) {
         stringAddress = '0x' + address;
     }
-
-    console.log(stringAddress);
 
     try {
         const response = await axios.post(url, {
@@ -41,7 +37,7 @@ async function getProfile(api: SnsApi, address: SuiAddress): Promise<Profile> {
                 name: fields.name,
                 bio: fields.bio,
                 image: fields.image,
-                primary: fields.id ? fields.id['id'] : null,
+                primary: fields.primary ? fields.primary : null,
                 records: parsedRecords as {string: string},
                 timestamp: Number(fields.timestamp),
             };
