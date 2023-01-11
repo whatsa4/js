@@ -3,7 +3,7 @@
 </div>
 
 ![build workflow](https://github.com/snsdomains/js/actions/workflows/tests.yml/badge.svg)
-[![npm version](https://badge.fury.io/js/@snsdomains%2Fidl.svg)](https://badge.fury.io/js/@snsdomains%2Fidl)
+[![npm version](https://badge.fury.io/js/@snsdomains%2Fjs.svg)](https://badge.fury.io/js/@snsdomains%2Fjs)
 
 The Sui Name Service is a decentralized naming and identity protocol for the Sui Network. This package provides all the JavaScript resources to
 interact with the on-chain [domains](https://github.com/snsdomains/domains) program. We are proudly open-source and community-run.
