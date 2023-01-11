@@ -1,7 +1,7 @@
 import {MoveCallTransaction, ObjectId, SuiAddress} from "@mysten/sui.js";
 import {SnsApi} from "../api";
 import {getResolver, getAddress, getDomains} from "./queries";
-import {registerDomain, extendRegistration, deleteRecords, setRecords} from "./methods";
+import {registerDomain, extendRegistration, setRecords} from "./methods";
 
 /*
  * Interfaces
@@ -28,13 +28,14 @@ export interface DomainNFT {
     timestamp: number,
 }
 export interface ResolverRecord {
+
     value: string,
     ttl: number
 }
 export interface DomainResolver {
     id: SuiAddress,
     domain_nft: SuiAddress,
-    records: {string: ResolverRecord},
+    records: [ResolverRecord],
     expiration: number
 }
 
@@ -112,9 +113,6 @@ export class Domains {
     };
     setRecords(args: SetDomainRecordsArguments): MoveCallTransaction {
         return setRecords(this.api, args);
-    };
-    deleteRecords(args: DeleteDomainRecordsArguments): MoveCallTransaction {
-        return deleteRecords(this.api, args);
     };
 
 }

@@ -11,6 +11,7 @@ function registerProfile(api: SnsApi, args: RegisterProfileArguments): MoveCallT
         function: 'updateProfile',
         typeArguments: [],
         arguments: [
+            programObjects.profileRegistryId,
             programObjects.timeOracleId
         ],
         gasBudget: args.gasBudget,
@@ -24,13 +25,13 @@ function updateProfile(api: SnsApi, args: UpdateProfileArguments): MoveCallTrans
         function: 'updateProfile',
         typeArguments: [],
         arguments: [
-            args.profile.toString(),
-
             args.name,
-            args.url,
-            args.primary,
+            args.description,
             args.keys,
-            args.values
+            args.values,
+
+            args.primary,
+            programObjects.profileRegistryId
         ],
         gasBudget: args.gasBudget,
     };

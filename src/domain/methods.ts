@@ -1,7 +1,6 @@
 import {MoveCallTransaction} from "@mysten/sui.js";
 import {SnsApi} from "../api";
 import {
-    DeleteDomainRecordsArguments,
     ExtendRegistrationArguments,
     RegisterDomainArguments,
     SetDomainRecordsArguments
@@ -35,7 +34,7 @@ async function registerDomain(
             programObjects.timeOracleId,
             programObjects.domainCollectionId
         ],
-        gasBudget: args.gasBudget || 250_000
+        gasBudget: args.gasBudget || 20_000
     }
 }
 
@@ -58,7 +57,7 @@ async function extendRegistration(
 
             programObjects.domainRegistryId
         ],
-        gasBudget: args.gasBudget || 250_000
+        gasBudget: args.gasBudget || 20_000
     }
 }
 
@@ -87,29 +86,10 @@ function setRecords(
 
             programObjects.domainRegistryId
         ],
-        gasBudget: args.gasBudget || 250_000,
+        gasBudget: args.gasBudget || 20_000,
     }
 }
 
 
-function deleteRecords(
-    api: SnsApi,
-    args: DeleteDomainRecordsArguments
-): MoveCallTransaction {
-    const { programObjects } = api;
 
-    return {
-        packageObjectId: programObjects.packageId,
-        module: 'domain',
-        function: 'deleteRecords',
-        typeArguments: [],
-        arguments: [
-            args.domain_nft,
-            args.keys
-        ],
-        gasBudget: args.gasBudget || 250_000
-    }
-}
-
-
-export { registerDomain, extendRegistration, setRecords, deleteRecords }
+export { registerDomain, extendRegistration, setRecords }

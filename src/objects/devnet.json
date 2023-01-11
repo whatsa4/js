@@ -1,9 +1,13 @@
 {
   "packageId": "0x795d9b451210d08363b5a89dacc669d3c2d2a021",
   "adminId": "0x5e2b0977191dfba25959e450f33d79ccb79fcfee",
-  "domainRegistry": "",
-  "profileRegistry": "",
+  "domainAdminCapId": "",
+  "domainRegistryId": "",
+  "profileRegistryId": "",
+
+  "timeOracleId": "",
+  "timeAdminCapId": "",
+
   "domainCollectionId": "0xed96e5c6d18c05718383e546733b529a2bc0ce72",
-  "treasuryId": "0x8a8cfb60211a411a3a33973e6de1640f9fbbd599",
-  "timeOracleId": "0x8ef2c7ab83d02ccd37ca5b11989ef09dbdf61fa1"
+  "domainCollectionAdminCap": ""
 }
