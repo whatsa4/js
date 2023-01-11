@@ -1,28 +1,22 @@
 import {MoveCallTransaction, ObjectId, SuiAddress} from "@mysten/sui.js";
 import {SnsApi} from "../api";
-import {getResolver, getDomainNFT, getAddress, getAddressByResolver, getDomainNFTById} from "./queries";
+import {getResolver, getAddress, getDomains} from "./queries";
 import {registerDomain, extendRegistration, deleteRecords, setRecords} from "./methods";
 
 /*
  * Interfaces
  */
 
-export interface ResolverRecord {
-    value: string,
-    ttl: number,
-}
-export interface Resolver {
-    id: SuiAddress,
-    domain: SuiAddress,
-    records: {string: ResolverRecord},
-    subdomains?: string,
-    expiration: number
-}
 export interface DomainNFT {
     id: SuiAddress,
     collection: SuiAddress,
     owner: SuiAddress,
 
+    // domain-specific
+    domain_name: string,
+    domain_tld: string,
+
+    // nft-related
     name: string,
     attributes: {
         keys: [string],
@@ -33,43 +27,51 @@ export interface DomainNFT {
     expiration: number,
     timestamp: number,
 }
+export interface ResolverRecord {
+    value: string,
+    ttl: number
+}
+export interface DomainResolver {
+    id: SuiAddress,
+    domain_nft: SuiAddress,
+    records: {string: ResolverRecord},
+    expiration: number
+}
+
+export const getDomainNftType = (packageId) => `${packageId}::domain::DomainNft`;
 
 /*
  * Arguments
  */
 
 export interface RegisterDomainArguments {
-    sender: SuiAddress,
-
     name: string,
     tld: string,
     years: number,
-    coins: ObjectId,
+    fee: ObjectId,
 
-    gasBudget: number
+    gasBudget?: number,
 }
 export interface ExtendRegistrationArguments {
-    name: string,
+    domain_nft: ObjectId,
     years: number,
-    coins: ObjectId,
-    createProfile: boolean,
-    gasBudget: number
+    fee: ObjectId,
+
+    gasBudget?: number,
 }
 export interface SetDomainRecordsArguments {
-    domain: ObjectId,
-    resolver: ObjectId,
+    domain_nft: ObjectId,
     keys: [string],
     values: [string],
-    TTLs: [number],
-    gasBudget: number,
+    ttls: [number],
+
+    gasBudget?: number,
 }
 export interface DeleteDomainRecordsArguments {
-    domain: ObjectId,
-    resolver: ObjectId,
+    domain_nft: ObjectId,
     keys: [string],
-    values: [string],
-    TTLs: [number],
-    gasBudget: number,
+
+    gasBudget?: number,
 }
 
 /*
@@ -88,20 +90,14 @@ export class Domains {
      * Queries
      */
 
-    async getResolver(domain: string): Promise<Resolver> {
-        return await getResolver(this.api, domain);
-    };
-    async getDomainNFT(domain: string): Promise<DomainNFT> {
-        return await getDomainNFT(this.api, domain);
-    };
-    async getDomainNFTById(id: SuiAddress): Promise<DomainNFT> {
-        return getDomainNFTById(this.api, id);
+    async getResolver(domain: string): Promise<DomainResolver> {
+        return getResolver(this.api, domain);
     }
     async getAddress(domain: string): Promise<SuiAddress> {
-        return await getAddress(this.api, domain);
-    };
-    async getAddressByResolver(resolverId: string): Promise<SuiAddress> {
-        return getAddressByResolver(this.api, resolverId);
+        return getAddress(this.api, domain);
+    }
+    async getDomains(address: SuiAddress): Promise<DomainNFT[]> {
+        return getDomains(this.api, address);
     }
 
     /*
@@ -114,10 +110,11 @@ export class Domains {
     async extendRegistration(args: ExtendRegistrationArguments): Promise<MoveCallTransaction> {
         return await extendRegistration(this.api, args);
     };
-    deleteRecords(args: DeleteDomainRecordsArguments): MoveCallTransaction {
-        return deleteRecords(this.api, args);
-    };
     setRecords(args: SetDomainRecordsArguments): MoveCallTransaction {
         return setRecords(this.api, args);
     };
+    deleteRecords(args: DeleteDomainRecordsArguments): MoveCallTransaction {
+        return deleteRecords(this.api, args);
+    };
+
 }

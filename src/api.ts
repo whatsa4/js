@@ -6,18 +6,18 @@ import {Profiles} from "./profile";
 class SnsApi {
 
     provider: JsonRpcProvider;
-    objects: ProgramObjects;
+    programObjects: ProgramObjects;
 
     domains: Domains;
     profiles: Profiles;
 
-    constructor(provider: JsonRpcProvider, type: Network, objects: ProgramObjects = null) {
+    constructor(provider: JsonRpcProvider, type: Network, programObjects: ProgramObjects = null) {
         this.provider = provider;
 
-        if(objects == null) {
-            this.objects = getObjects(type);
+        if(programObjects == null) {
+            this.programObjects = getObjects(type);
         } else {
-            this.objects = objects;
+            this.programObjects = programObjects;
         }
 
         this.domains = new Domains(this);

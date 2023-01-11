@@ -1,19 +1,22 @@
 import {MoveCallTransaction, SuiAddress} from "@mysten/sui.js";
 import {SnsApi} from "../api";
-import {getPrimaryDomain, getProfile} from "./queries";
 import {registerProfile, updateProfile} from "./methods";
-import {DomainNFT} from "../domain";
 
 /*
  * Interfaces
  */
 
 export interface Profile {
-    id: string,
-    owner: string,
-    url: string,
-    primary?: string,
-    properties: [string: string],
+    id: SuiAddress,
+
+    name: string,
+    description: string,
+    image: string,
+
+    primary?: SuiAddress,
+    records: {string: string},
+
+    timestamp: number,
 }
 export const getType = (packageId) => `${packageId}::domain::Profile`;
 
@@ -22,22 +25,16 @@ export const getType = (packageId) => `${packageId}::domain::Profile`;
  */
 
 export interface RegisterProfileArguments {
-    gasBudget: number
-}
-export interface RemovePropertiesArguments {
-    profile: SuiAddress,
-    keys: [string],
-    gasBudget: number
+    gasBudget?: number
 }
 export interface UpdateProfileArguments {
-    profile: SuiAddress,
-
-    name: string,
-    url: string,
+    name?: string,
+    description?: string,
+    keys?: [string],
+    values?: [string],
     primary?: SuiAddress,
-    keys: [string],
-    values: [string],
-    gasBudget: number
+
+    gasBudget?: number,
 }
 
 /*
@@ -56,11 +53,11 @@ export class Profiles {
      * Queries
      */
 
-    async getProfile(address: SuiAddress): Promise<Profile> {
-        return await getProfile(this.api, address);
+    async getProfile(domain: string): Promise<Profile> {
+        return null;
     }
-    async getPrimaryDomain(profileAddress: SuiAddress): Promise<DomainNFT> {
-        return await getPrimaryDomain(this.api, profileAddress);
+    async getProfileByAddress(address: SuiAddress): Promise<Profile> {
+        return null;
     }
 
     /*

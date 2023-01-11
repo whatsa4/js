@@ -6,8 +6,11 @@ const OBJECTS_URL = "https://raw.githubusercontent.com/snsdomains/objects.json/m
 
 interface ProgramObjects {
     packageId: SuiAddress,
-    adminId: SuiAddress,
-    sortedDomainTableIds: [SuiAddress],
+    adminCapId: SuiAddress,
+
+    domainRegistryId: SuiAddress,
+    profileRegistryId: SuiAddress,
+
     domainCollectionId: SuiAddress,
     treasuryId: SuiAddress,
     timeOracleId: SuiAddress,

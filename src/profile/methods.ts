@@ -4,22 +4,22 @@ import {RegisterProfileArguments, UpdateProfileArguments} from "./index";
 
 
 function registerProfile(api: SnsApi, args: RegisterProfileArguments): MoveCallTransaction {
-    const { objects } = api;
+    const { programObjects } = api;
     return {
-        packageObjectId: objects.packageId,
+        packageObjectId: programObjects.packageId,
         module: 'domain',
         function: 'updateProfile',
         typeArguments: [],
         arguments: [
-            objects.timeOracleId
+            programObjects.timeOracleId
         ],
         gasBudget: args.gasBudget,
     };
 }
 function updateProfile(api: SnsApi, args: UpdateProfileArguments): MoveCallTransaction {
-    const {objects} = api;
+    const {programObjects} = api;
     return {
-        packageObjectId: objects.packageId,
+        packageObjectId: programObjects.packageId,
         module: 'domain',
         function: 'updateProfile',
         typeArguments: [],

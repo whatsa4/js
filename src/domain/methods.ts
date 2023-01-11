@@ -6,8 +6,6 @@ import {
     RegisterDomainArguments,
     SetDomainRecordsArguments
 } from "./index";
-import {getResolver} from "./queries";
-import getTableId from "../util/getTableId";
 
 
 /*
@@ -18,55 +16,26 @@ async function registerDomain(
     api: SnsApi,
     args: RegisterDomainArguments
 ): Promise<MoveCallTransaction> {
-    const { objects } = api;
-    const { gasBudget } = args;
+    const { programObjects } = api;
 
-    const tableId = getTableId(args.name, objects);
-    const resolver = await getResolver(api, args.name);
-    const profile = await api.profiles.getProfile(args.sender);
-    const createProfile = profile == null;
+    return {
+        packageObjectId: programObjects.packageId,
+        module: 'domain',
+        function: 'registerDomain',
+        typeArguments: [],
+        arguments: [
+            args.name,
+            args.tld,
+            args.years,
+            args.fee,
 
-    if(!resolver) {
-        return {
-            packageObjectId: objects.packageId,
-            module: 'domain',
-            function: 'registerDomain',
-            typeArguments: [],
-            arguments: [
-                args.name,
-                args.tld,
-                args.years,
-                args.coins,
-                createProfile,
+            programObjects.domainRegistryId,
+            programObjects.profileRegistryId,
 
-                objects.timeOracleId,
-                objects.treasuryId,
-                tableId,
-                objects.domainCollectionId
-            ],
-            gasBudget,
-        }
-    } else {
-        return {
-            packageObjectId: objects.packageId,
-            module: 'domain',
-            function: 'registerExpiredDomain',
-            typeArguments: [],
-            arguments: [
-                args.name,
-                args.tld,
-                args.years,
-                args.coins,
-                createProfile,
-
-                objects.timeOracleId,
-                objects.treasuryId,
-                tableId,
-                objects.domainCollectionId,
-                resolver.id
-            ],
-            gasBudget
-        }
+            programObjects.timeOracleId,
+            programObjects.domainCollectionId
+        ],
+        gasBudget: args.gasBudget || 250_000
     }
 }
 
@@ -75,24 +44,21 @@ async function extendRegistration(
     api: SnsApi,
     args: ExtendRegistrationArguments
 ): Promise<MoveCallTransaction> {
-    const { objects } = api;
-    const { gasBudget } = args;
-
-    const resolver = await getResolver(api, args.name);
+    const { programObjects } = api;
 
     return {
-        packageObjectId: objects.packageId,
+        packageObjectId: programObjects.packageId,
         module: 'domain',
         function: 'extendRegistration',
         typeArguments: [],
         arguments: [
+            args.domain_nft,
             args.years,
-            args.coins,
-            resolver.domain,
-            resolver.id,
-            objects.treasuryId
+            args.fee,
+
+            programObjects.domainRegistryId
         ],
-        gasBudget,
+        gasBudget: args.gasBudget || 250_000
     }
 }
 
@@ -106,22 +72,22 @@ function setRecords(
     api: SnsApi,
     args: SetDomainRecordsArguments
 ): MoveCallTransaction {
-    const { objects } = api;
-    const { gasBudget } = args;
+    const { programObjects } = api;
 
     return {
-        packageObjectId: objects.packageId,
+        packageObjectId: programObjects.packageId,
         module: 'domain',
         function: 'setRecords',
         typeArguments: [],
         arguments: [
-            args.domain,
-            args.resolver,
+            args.domain_nft,
             args.keys,
             args.values,
-            args.TTLs,
+            args.ttls,
+
+            programObjects.domainRegistryId
         ],
-        gasBudget,
+        gasBudget: args.gasBudget || 250_000,
     }
 }
 
@@ -130,22 +96,18 @@ function deleteRecords(
     api: SnsApi,
     args: DeleteDomainRecordsArguments
 ): MoveCallTransaction {
-    const { objects } = api;
-    const { gasBudget } = args;
+    const { programObjects } = api;
 
     return {
-        packageObjectId: objects.packageId,
+        packageObjectId: programObjects.packageId,
         module: 'domain',
         function: 'deleteRecords',
         typeArguments: [],
         arguments: [
-            args.domain,
-            args.resolver,
-            args.keys,
-            args.values,
-            args.TTLs,
+            args.domain_nft,
+            args.keys
         ],
-        gasBudget,
+        gasBudget: args.gasBudget || 250_000
     }
 }
 

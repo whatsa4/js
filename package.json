@@ -9,7 +9,7 @@
     "/dist"
   ],
   "dependencies": {
-    "@mysten/sui.js": "^0.15.0",
+    "@mysten/sui.js": "^0.20.0",
     "axios": "^1.2.0"
   },
   "devDependencies": {
