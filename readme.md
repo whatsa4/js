@@ -1,6 +1,4 @@
-<div align="center">
-  <h1>@snsdomains/js</h1>
-</div>
+# `@snsdomains/js`
 
 ![build workflow](https://github.com/snsdomains/js/actions/workflows/tests.yml/badge.svg)
 [![npm version](https://badge.fury.io/js/@snsdomains%2Fjs.svg)](https://badge.fury.io/js/@snsdomains%2Fjs)
@@ -43,28 +41,45 @@ This was done to prevent mis-transfers of funds following secondary sales, and t
 associated with changing the resolvable address of a domain.
 
 ## Examples
-*Resolve a domain in three lines of code!* </br>
+*Resolve a domain in five lines of code!* </br>
 Below are listed all of our available query methods.
 
+**GET a Domain's `SuiAddress`** <br/>
+This is the core query of the Sui Name Service and resolves a domain to its owner. <br/>
 ```typescript
-import {getResolver, getDomainNFT, getDomainAddress} from '@snsdomains/js';
-import {JsonRpcProvider} from "@mysten/sui.js";
+import {SnsApi} from '@snsdomains/js';
+import {JsonRpcProvider, Network} from "@mysten/sui.js";
 
+// Configure API / provider
 const provider = new JsonRpcProvider(Network.DEVNET);
+const api = new SnsApi(provider, Network.DEVNET);
 
-// get the address for "anthony.sui" - ALWAYS SEND TO THIS ADDRESS
-const address: SuiAddress = await getDomainAddress(provider, "anthony.sui");
-
-// get the domain NFT for "anthony.sui"
-const domain: DomainNFT = await getDomainNFT(provider, "anthony.sui");
-
-// get the domain records associated with "anthony.sui"
-const resolver: Resolver = await getResolver(provider, "anthony.sui");
-
-// get a user's profile on Sui (automatically created)
-const userAddress = "0xc78184323182485f24e9484b52c42436b7410fc2";
-const profile: Profile = await getProfile(provider, userAddress);
+// Resolve domain
+const address = await api.domains.getAddress("anthony.sui");
 ```
+
+**GET an Ownership `DomainNFT`**
+```typescript
+const nft = await api.domains.getDomainNFT("anthony.sui");
+```
+
+**GET a `DomainResolver`**<br/>
+Domain name-service records are stored on the resolver.
+For consecutive queries of the same name, please cache the domain's `Resolver` and use it
+to re-query the domain address or records.
+```typescript
+const resolver = await api.domains.getResolver("anthony.sui");
+```
+
+**GET a user's Sui `Profile`**<br/>
+```typescript
+const userAddress = ""
+const profile = await api.profiles.getProfile();
+```
+
+
+
+
 
 ### Versioning
 * 0.0.1 Increase: **object.json** update

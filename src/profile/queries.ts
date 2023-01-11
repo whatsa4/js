@@ -1,7 +1,12 @@
-import {JsonRpcProvider, PublicKey, SuiMoveObject, SuiObject} from "@mysten/sui.js";
-import {Profile, type as ProfileType} from "./index";
+import {PublicKey, SuiMoveObject, SuiObject} from "@mysten/sui.js";
+import {SnsApi} from "../api";
+import {Profile, getType} from "./index";
 
-async function getProfile(provider: JsonRpcProvider, address: PublicKey): Promise<Profile> {
+
+async function getProfile(api: SnsApi, address: PublicKey): Promise<Profile> {
+    const { provider, objects } = api;
+    const ProfileType = getType(objects.packageId);
+
     const objectInfos = await provider.getObjectsOwnedByAddress(address.toSuiAddress());
     let profile = null;
 
@@ -26,5 +31,6 @@ async function getProfile(provider: JsonRpcProvider, address: PublicKey): Promis
 
     return profile;
 }
+
 
 export { getProfile };

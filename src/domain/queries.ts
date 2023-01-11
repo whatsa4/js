@@ -1,9 +1,13 @@
-import {JsonRpcProvider, SuiAddress, SuiMoveObject, SuiObject} from "@mysten/sui.js";
+import {SuiAddress, SuiMoveObject, SuiObject} from "@mysten/sui.js";
+import {SnsApi} from "../api";
 import {DomainNFT, Resolver} from "./index";
 import getTableId from "../util/getTableId";
 
-async function getResolver(provider: JsonRpcProvider, name: string): Promise<Resolver> {
-    const tableId = getTableId(name);
+
+async function getResolver(api: SnsApi, domain: string): Promise<Resolver> {
+    const { provider, objects } = api;
+
+    const tableId = getTableId(domain, objects);
     const tableObjectResponse = await provider.getObject(tableId);
 
     if(tableObjectResponse.status !== "NotExists") {
@@ -13,7 +17,7 @@ async function getResolver(provider: JsonRpcProvider, name: string): Promise<Res
 
         for (let index in resolvers) {
             let resolver = resolvers[index];
-            if (resolver.fields.key === name.toLowerCase().toString()) {
+            if (resolver.fields.key === domain.toLowerCase().toString()) {
                 resolverId = resolver.fields.value;
             }
         }
@@ -37,8 +41,8 @@ async function getResolver(provider: JsonRpcProvider, name: string): Promise<Res
     }
 }
 
-async function getDomainNFT(provider: JsonRpcProvider, name: string): Promise<DomainNFT> {
-    const resolver = await getResolver(provider, name);
+async function getDomainNFTByResolver(api: SnsApi, resolver: Resolver): Promise<DomainNFT> {
+    const { provider } = api;
 
     if(resolver) {
         const domainObjectResponse = await provider.getObject(resolver.domain);
@@ -64,15 +68,39 @@ async function getDomainNFT(provider: JsonRpcProvider, name: string): Promise<Do
         return null;
     }
 }
+async function getDomainNFT(api: SnsApi, domain: string): Promise<DomainNFT> {
+    const resolver = await getResolver(api, domain);
+    return await getDomainNFTByResolver(api, resolver);
+}
 
-async function getDomainAddress(provider: JsonRpcProvider, name: string): Promise<SuiAddress> {
-    const domain = await getDomainNFT(provider, name);
+async function getAddress(api: SnsApi, domain: string): Promise<SuiAddress> {
+    const nft = await getDomainNFT(api, domain);
+    if(nft)
+        return nft.owner;
+    else
+        return null;
+}
+async function getAddressByResolver(api: SnsApi, resolverId: SuiAddress): Promise<SuiAddress> {
+    const { provider } = api;
 
-    if(domain) {
-        return domain.owner;
+    const resolverObjectResponse = await provider.getObject(resolverId);
+
+    if(resolverObjectResponse.status == 'Exists') {
+        const resolverFields = ((resolverObjectResponse.details as SuiObject).data as SuiMoveObject).fields;
+        const resolver = {
+            id: resolverFields.id,
+            domain: resolverFields.domain,
+            records: resolverFields.records,
+            subdomains: resolverFields.subdomains,
+            expiration: resolverFields.expiration
+        };
+
+        const nft = await getDomainNFTByResolver(api, resolver);
+        if(nft)
+            return nft.owner;
     }
 
     return null;
 }
 
-export { getResolver, getDomainNFT, getDomainAddress };
+export { getResolver, getDomainNFT, getAddress, getAddressByResolver };

@@ -1,7 +1,16 @@
-export { Profile } from './profile';
-export { registerProfile, setProperties, removeProperties } from './profile/methods';
-export { getProfile } from './profile/queries';
-
-export { ResolverRecord, DomainNFT, Resolver } from './domain';
-export { registerDomain, extendRegistration, setRecords, deleteRecords } from './domain/methods';
-export { getResolver, getDomainNFT, getDomainAddress } from './domain/queries';
+export { SnsApi } from './api';
+export {
+    Resolver,
+    ResolverRecord,
+    DomainNFT,
+    RegisterDomainArguments,
+    ExtendRegistrationArguments,
+    SetDomainRecordsArguments,
+    DeleteDomainRecordsArguments
+} from './domain';
+export {
+    Profile,
+    RegisterProfileArguments,
+    SetPropertiesArguments,
+    RemovePropertiesArguments
+} from './profile';
