@@ -29,10 +29,7 @@ async function registerDomain(
             args.fee,
 
             programObjects.domainRegistryId,
-            programObjects.profileRegistryId,
-
-            programObjects.timeOracleId,
-            programObjects.domainCollectionId
+            programObjects.profileRegistryId
         ],
         gasBudget: args.gasBudget || 20_000
     }

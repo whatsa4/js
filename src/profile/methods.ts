@@ -12,7 +12,6 @@ function registerProfile(api: SnsApi, args: RegisterProfileArguments): MoveCallT
         typeArguments: [],
         arguments: [
             programObjects.profileRegistryId,
-            programObjects.timeOracleId
         ],
         gasBudget: args.gasBudget,
     };

@@ -34,8 +34,8 @@ describe("Sui Name Service - query api tests", async () => {
     const domain_name = "testertester3";
 
     it("program - deployed", async function() {
-        const timeOracleId = getObjects(Network.DEVNET).timeOracleId;
-        const timeOracleQueryResponse = await provider.getObject(timeOracleId);
+        const collectionId = getObjects(Network.DEVNET).domainCollectionId;
+        const timeOracleQueryResponse = await provider.getObject(collectionId);
         assert.equal(timeOracleQueryResponse.status, 'Exists', 'program not deployed or old objects.json');
     });
 
@@ -53,9 +53,10 @@ describe("Sui Name Service - query api tests", async () => {
                 const signerAddress = await signer.getAddress();
                 let coinIds = await provider.getGasObjectsOwnedByAddress(signerAddress);
                 let coins = await provider.getObjectBatch(coinIds.map((coinId) => coinId.objectId));
-                coins = coins.sort((coin1, coin2) => Coin.getBalance(coin1) > Coin.getBalance(coin2) ? 1 : -1);
+                // sort from greatest to least - descending order
+                coins = coins.sort((coin1, coin2) => Coin.getBalance(coin1) > Coin.getBalance(coin2) ? -1 : 1);
 
-                const coinId = coinIds[2].objectId;
+                const coinId = coins[0].details['data']['fields']['id']['id'];
 
                 const domainTx = await api.domains.registerDomain({
                     name: domain_name,
@@ -65,6 +66,8 @@ describe("Sui Name Service - query api tests", async () => {
                 });
 
                 const response = await signer.executeMoveCall(domainTx);
+                console.log(JSON.stringify(response['EffectsCert']['effects']['effects']));
+
                 assert.equal(response['EffectsCert']['effects']['effects']['status']['status'], 'success', response.toString());
             });
         });

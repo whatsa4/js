@@ -11,7 +11,6 @@ interface ProgramObjects {
     domainRegistryId: SuiAddress,
     profileRegistryId: SuiAddress,
 
-    timeOracleId: SuiAddress,
     domainCollectionId: SuiAddress,
 }
 function getObjects(type: Network): ProgramObjects {
