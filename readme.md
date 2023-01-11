@@ -1,10 +1,10 @@
-<h1>@snsdomains/domains.js</h1>
+<h1>@snsdomains/js</h1>
 
 ![build workflow](https://github.com/snsdomains/js/actions/workflows/tests.yml/badge.svg)
 [![npm version](https://badge.fury.io/js/@snsdomains%2Fidl.svg)](https://badge.fury.io/js/@snsdomains%2Fidl)
 
 The Sui Name Service is the first community-run name service on the Sui Network. This package provides all the JavaScript resources to
-interact with the domains program. 
+interact with the on-chain [domains](https://github.com/snsdomains/domains) program. 
 
 ## Getting Started
 For a quick start guide, please see the examples below or view the documentation here. The library is very
