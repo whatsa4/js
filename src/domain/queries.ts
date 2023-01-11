@@ -5,6 +5,7 @@ import getTableId from "../util/getTableId";
 
 
 async function getResolver(api: SnsApi, domain: string): Promise<Resolver> {
+    domain = domain.split('.')[0];
     const { provider, objects } = api;
 
     const tableId = getTableId(domain, objects);
@@ -69,12 +70,16 @@ async function getDomainNFTByResolver(api: SnsApi, resolver: Resolver): Promise<
     }
 }
 async function getDomainNFT(api: SnsApi, domain: string): Promise<DomainNFT> {
+    domain = domain.split('.')[0];
+
     const resolver = await getResolver(api, domain);
     return await getDomainNFTByResolver(api, resolver);
 }
 
 async function getAddress(api: SnsApi, domain: string): Promise<SuiAddress> {
+    domain = domain.split('.')[0];
     const nft = await getDomainNFT(api, domain);
+
     if(nft)
         return nft.owner;
     else
@@ -82,7 +87,6 @@ async function getAddress(api: SnsApi, domain: string): Promise<SuiAddress> {
 }
 async function getAddressByResolver(api: SnsApi, resolverId: SuiAddress): Promise<SuiAddress> {
     const { provider } = api;
-
     const resolverObjectResponse = await provider.getObject(resolverId);
 
     if(resolverObjectResponse.status == 'Exists') {

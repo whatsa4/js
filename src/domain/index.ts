@@ -40,7 +40,7 @@ export interface DomainNFT {
  */
 
 export interface RegisterDomainArguments {
-    sender: PublicKey,
+    sender: SuiAddress,
     name: string,
     tld: string,
     years: number,
