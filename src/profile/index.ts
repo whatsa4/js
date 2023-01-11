@@ -51,7 +51,7 @@ export class Profiles {
      * Queries
      */
 
-    async getProfile(address: PublicKey): Promise<Profile> {
+    async getProfile(address: SuiAddress): Promise<Profile> {
         return await getProfile(this.api, address);
     }
 
