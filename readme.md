@@ -65,7 +65,7 @@ const address = await api.domains.getAddress("anthony.sui");
 
 #### GET an Ownership `DomainNFT`
 ```typescript
-const nft = await api.domains.getDomainNFT("anthony.sui");
+const nft = await api.domains.getDomain("anthony.sui");
 ```
 
 #### GET a `DomainResolver`
@@ -80,6 +80,13 @@ const resolver = await api.domains.getResolver("anthony.sui");
 ```typescript
 const userAddress = "0xc4173a804406a365e69dfb297d4eaaf002546ebd"
 const profile = await api.profiles.getProfile(userAddress);
+```
+
+#### GET a user's Sui `Primary Domain Name`
+```typescript
+const userAddress = "0xc4173a804406a365e69dfb297d4eaaf002546ebd"
+const profile = await api.profiles.getProfile(userAddress);
+const primary = await api.profiles.getPrimaryDomain(profile);
 ```
 
 
