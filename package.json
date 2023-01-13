@@ -3,7 +3,7 @@
   "version": "3.0.18",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "author": "StorkLabs LLC",
+  "author": "StorkLab LLC",
   "license": "MIT",
   "files": [
     "/dist"

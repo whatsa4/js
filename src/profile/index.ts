@@ -1,9 +1,8 @@
 import {MoveCallTransaction, SuiAddress} from "@mysten/sui.js";
 import {SnsApi} from "../api";
 import {registerProfile, updateProfile} from "./methods";
-import {getProfile} from "./queries";
+import {getProfile, getPrimaryDomain} from "./queries";
 import {DomainNFT} from "../domain";
-import {getPrimaryDomain} from "../../dist/profile/queries";
 
 /*
  * Interfaces
@@ -60,7 +59,7 @@ export class Profiles {
     }
 
     async getPrimaryDomain(profile: Profile): Promise<DomainNFT> {
-        return getPrimaryDomain(this.api, profile.primary);
+        return getPrimaryDomain(this.api, profile);
     }
     /*
      * Methods

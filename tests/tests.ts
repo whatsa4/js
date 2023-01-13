@@ -129,6 +129,18 @@ describe("Sui Name Service - query api tests", async () => {
                 assert.equal(profile, null);
             }
         });
+
+        step("profile::getPrimaryDomain", async function() {
+            const address = await signer.getAddress();
+            const profile = await api.profiles.getProfile(address);
+            const primaryDomain = await api.profiles.getPrimaryDomain(profile);
+
+            if(testMethods || domainCreated) {
+                assert.notEqual(primaryDomain, null);
+            } else {
+                assert.equal(profile, null);
+            }
+        });
     });
 
 });

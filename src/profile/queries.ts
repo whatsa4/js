@@ -64,4 +64,4 @@ async function getPrimaryDomain(api: SnsApi, profile: Profile): Promise<DomainNF
     }
 }
 
-export { getProfile };
+export { getProfile, getPrimaryDomain };
