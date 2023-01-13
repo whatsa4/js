@@ -2,6 +2,8 @@ import {Profile} from "./index";
 import {SuiAddress} from "@mysten/sui.js";
 import axios from "axios";
 import {SnsApi} from "../api";
+import {DomainNFT} from "../domain";
+import parseDomainObjectResponse from "../util";
 
 async function getProfile(api: SnsApi, address: SuiAddress): Promise<Profile> {
     const url = api.provider.endpoints.fullNode;
@@ -46,6 +48,18 @@ async function getProfile(api: SnsApi, address: SuiAddress): Promise<Profile> {
         }
     } catch(e) {
         console.log('ERROR: profile:queries:getProfile(', address.toString(), ') -', e);
+        return null;
+    }
+}
+
+async function getPrimaryDomain(api: SnsApi, profile: Profile): Promise<DomainNFT> {
+    const { provider } = api;
+    const nftAddress = profile.primary;
+
+    if(nftAddress) {
+        const domainNftResponse = await provider.getObject(nftAddress);
+        return parseDomainObjectResponse(domainNftResponse);
+    } else {
         return null;
     }
 }
